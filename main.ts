@@ -1,4 +1,9 @@
-import { chmodSync, mkdirSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 
 // One-line office joke, 93 characters / 93 bytes, verified against the gate:
 // UTF-8 text of 1 to 200 characters, a single line, not only whitespace.
@@ -15,6 +20,16 @@ if (JOKE.includes("\n")) {
   throw new Error("entry must be a single line");
 }
 
-mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", JOKE, "utf8");
-chmodSync("/output/entry.txt", 0o644);
+// Output dir overridable for local runs (MAKEFUN_OUTPUT_DIR); the grader
+// runs with /output. Read-back check fails loudly on any write mismatch
+// instead of silently leaving a bad entry file.
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const entryPath = `${outDir}/entry.txt`;
+mkdirSync(outDir, { recursive: true });
+writeFileSync(entryPath, JOKE, "utf8");
+chmodSync(entryPath, 0o644);
+const written = readFileSync(entryPath, "utf8");
+if (written !== JOKE) {
+  throw new Error("read-back mismatch: entry.txt differs from the joke");
+}
+console.log(`wrote ${entryPath}: ${Buffer.byteLength(written, "utf8")} bytes`);
