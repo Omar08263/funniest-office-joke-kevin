@@ -8,7 +8,9 @@ One line about office life, under 200 characters. Built for the [The Funniest Of
 
 ## The joke
 
-> TBD — chosen by independent review.
+> I replied-all to say please stop replying-all, and now the thread has its own meeting invite.
+
+93 characters, one line. The reply-all loop turns twice: first the reply-all used to protest reply-all itself, then the thread escalating beyond email into its own meeting invite.
 
 ## Run it
 
